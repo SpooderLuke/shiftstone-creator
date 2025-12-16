@@ -1,0 +1,532 @@
+[gd_scene load_steps=15 format=3 uid="uid://b4hr6pjlocl5l"]
+
+[ext_resource type="Script" uid="uid://caocbrcre5plw" path="res://exporter.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://fhtksd66y2e3" path="res://feature_panel.gd" id="5_7mycd"]
+[ext_resource type="Script" uid="uid://cnpktj2pqutf2" path="res://particles.gd" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://c2wmayovhjp76" path="res://trail.gd" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://b1h0f6vccmeko" path="res://feature_check.gd" id="6_272bh"]
+[ext_resource type="PackedScene" uid="uid://okbpbvnvwtk3" path="res://Charge stone.fbx" id="7_272bh"]
+[ext_resource type="Script" uid="uid://b43nv175acetu" path="res://ObjectPanel.gd" id="8_kek77"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_272bh"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_5vw27"]
+sky_material = SubResource("ProceduralSkyMaterial_272bh")
+
+[sub_resource type="Environment" id="Environment_kek77"]
+background_mode = 2
+sky = SubResource("Sky_5vw27")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mycd"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_272bh"]
+material = SubResource("StandardMaterial3D_7mycd")
+
+[sub_resource type="LabelSettings" id="LabelSettings_7mycd"]
+font_size = 26
+outline_size = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_272bh"]
+font_size = 26
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kek77")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Exporter" type="Node3D" parent="."]
+script = ExtResource("1_0xm2m")
+
+[node name="GameObjects" type="Node3D" parent="Exporter"]
+
+[node name="Features" type="Node3D" parent="Exporter"]
+
+[node name="Activate" type="Node3D" parent="Exporter/Features"]
+
+[node name="Passive" type="Node3D" parent="Exporter/Features"]
+
+[node name="Unused" type="Node3D" parent="Exporter/Features"]
+
+[node name="ActivateParticles" type="CPUParticles3D" parent="Exporter/Features/Unused"]
+emitting = false
+one_shot = true
+mesh = SubResource("SphereMesh_272bh")
+script = ExtResource("5_lquwl")
+
+[node name="Trail" type="Node3D" parent="Exporter/Features/Unused"]
+script = ExtResource("6_7mycd")
+
+[node name="Particles" type="CPUParticles3D" parent="Exporter/Features/Unused"]
+script = ExtResource("5_lquwl")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.77901, 0.627012, 0, -0.627012, 0.77901, 0, 1.7334, 2.16635)
+fov = 41.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LeftPanel" type="Panel" parent="CanvasLayer"]
+custom_minimum_size = Vector2(266.45, 0)
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 289.0
+grow_vertical = 2
+script = ExtResource("8_kek77")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="CanvasLayer/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 430
+
+[node name="Panel" type="Panel" parent="CanvasLayer/LeftPanel/VSplitContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 94.0
+grow_vertical = 0
+text = "Add Object"
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/LeftPanel/VSplitContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label6" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Object ID (Name)"
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Position"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+min_value = -100.0
+step = 0.01
+update_on_text_changed = true
+prefix = "X:"
+
+[node name="SpinBox2" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+min_value = -100.0
+step = 0.01
+update_on_text_changed = true
+prefix = "Y:"
+
+[node name="SpinBox3" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+min_value = -100.0
+step = 0.01
+update_on_text_changed = true
+prefix = "Z:"
+
+[node name="Label2" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Rotation"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+min_value = -360.0
+max_value = 360.0
+update_on_text_changed = true
+prefix = "X:"
+
+[node name="SpinBox2" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+min_value = -360.0
+max_value = 360.0
+update_on_text_changed = true
+prefix = "Y:"
+
+[node name="SpinBox3" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+min_value = -360.0
+max_value = 360.0
+update_on_text_changed = true
+prefix = "Z:"
+
+[node name="Label3" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Scale"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+min_value = -100.0
+step = 0.01
+update_on_text_changed = true
+prefix = "X:"
+
+[node name="SpinBox2" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+min_value = -100.0
+step = 0.01
+update_on_text_changed = true
+prefix = "Y:"
+
+[node name="SpinBox3" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+min_value = -100.0
+step = 0.01
+update_on_text_changed = true
+prefix = "Z:"
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Use Shiftstone Material?
+(Ignores settings below)"
+
+[node name="Label4" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 27.81)
+layout_mode = 2
+
+[node name="Metallic" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Metallic"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="Label5" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Emission"
+
+[node name="ColorPickerButton2" type="ColorPickerButton" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 27.81)
+layout_mode = 2
+
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.01
+prefix = "Emission Strength:"
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 290.0
+offset_top = -44.0
+offset_right = 397.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 26
+text = "EXPORT"
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+custom_minimum_size = Vector2(285.015, 0)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("5_7mycd")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Passive Effects"
+label_settings = SubResource("LabelSettings_7mycd")
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="CheckBox" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer" node_paths=PackedStringArray("target")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Trail"
+script = ExtResource("6_272bh")
+target = NodePath("../../../../../Exporter/Features/Unused/Trail")
+
+[node name="Label3" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Start Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 28.155)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "End Color"
+
+[node name="ColorPickerButton2" type="ColorPickerButton" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 28.155)
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Width"
+
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+
+[node name="Label6" type="CheckBox" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer" node_paths=PackedStringArray("target")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Particles"
+script = ExtResource("6_272bh")
+target = NodePath("../../../../../Exporter/Features/Unused/Particles")
+
+[node name="Label7" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Particle Type"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+selected = 0
+item_count = 5
+popup/item_0/text = "Burst"
+popup/item_0/id = 0
+popup/item_1/text = "Fizzle"
+popup/item_1/id = 1
+popup/item_2/text = "Drip"
+popup/item_2/id = 2
+popup/item_3/text = "Rise"
+popup/item_3/id = 3
+popup/item_4/text = "Suck"
+popup/item_4/id = 4
+
+[node name="Label8" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="ColorPickerButton3" type="ColorPickerButton" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 28.155)
+layout_mode = 2
+
+[node name="Label9" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Amount"
+
+[node name="SpinBox2" type="SpinBox" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label10" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Activate Effects"
+label_settings = SubResource("LabelSettings_7mycd")
+
+[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label11" type="CheckBox" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer" node_paths=PackedStringArray("target")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Particles"
+script = ExtResource("6_272bh")
+target = NodePath("../../../../../Exporter/Features/Unused/ActivateParticles")
+passive = false
+
+[node name="Label12" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Particle Type"
+
+[node name="OptionButton2" type="OptionButton" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+selected = 0
+item_count = 5
+popup/item_0/text = "Burst"
+popup/item_0/id = 0
+popup/item_1/text = "Fizzle"
+popup/item_1/id = 1
+popup/item_2/text = "Drip"
+popup/item_2/id = 2
+popup/item_3/text = "Rise"
+popup/item_3/id = 3
+popup/item_4/text = "Suck"
+popup/item_4/id = 4
+
+[node name="Label13" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="ColorPickerButton4" type="ColorPickerButton" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 28.155)
+layout_mode = 2
+
+[node name="Label14" type="Label" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Amount"
+
+[node name="SpinBox3" type="SpinBox" parent="CanvasLayer/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.5
+offset_top = -11.5
+offset_right = 76.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Under Construction"
+label_settings = SubResource("LabelSettings_272bh")
+
+[node name="MeshPicker" type="OptionButton" parent="CanvasLayer"]
+visible = false
+custom_minimum_size = Vector2(185.225, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.6125
+offset_top = -10.0
+offset_right = 92.6125
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+selected = 1
+item_count = 4
+popup/item_0/text = "Icosphere"
+popup/item_0/id = 0
+popup/item_1/text = "Cube"
+popup/item_1/id = 1
+popup/item_2/text = "Cylinder"
+popup/item_2/id = 2
+popup/item_3/text = "Capsule"
+popup/item_3/id = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/MeshPicker"]
+layout_mode = 0
+offset_top = -25.0
+offset_right = 93.0
+offset_bottom = -2.0
+text = "Select Mesh"
+
+[node name="Button" type="Button" parent="CanvasLayer/MeshPicker"]
+layout_mode = 0
+offset_top = 31.0
+offset_right = 31.0
+offset_bottom = 62.0
+text = "OK"
+
+[node name="Panel" type="Panel" parent="CanvasLayer/MeshPicker"]
+show_behind_parent = true
+layout_mode = 0
+offset_left = -25.0
+offset_top = -32.0
+offset_right = 204.0
+offset_bottom = 72.0
+mouse_filter = 2
+
+[node name="VSlider" type="VSlider" parent="CanvasLayer"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 295.0
+offset_top = 45.0
+offset_right = 311.0
+offset_bottom = -69.0
+grow_vertical = 2
+min_value = 15.0
+max_value = 60.0
+value = 40.0
+
+[node name="Charge stone" parent="." instance=ExtResource("7_272bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.917, 0, 0)
+
+[node name="Label3D" type="Label3D" parent="Charge stone"]
+transform = Transform3D(0.08310406, 0, 0, 0, 0.08310406, 0, 0, 0, 0.08310406, 0, 0.13716158, 0)
+billboard = 1
+text = "Charge stone
+for reference"
+font_size = 147
+
+[node name="FileDialog" type="FileDialog" parent="."]
+access = 2
+filters = PackedStringArray("*.shift")
+
+[connection signal="pressed" from="CanvasLayer/LeftPanel/VSplitContainer/Panel/Button" to="CanvasLayer/LeftPanel" method="_on_add_object_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Button" to="Exporter" method="export_pressed"]
+[connection signal="pressed" from="CanvasLayer/MeshPicker/Button" to="CanvasLayer/LeftPanel" method="apply_selected_mesh"]
+[connection signal="file_selected" from="FileDialog" to="Exporter" method="_export"]
