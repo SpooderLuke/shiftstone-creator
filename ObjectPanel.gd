@@ -17,7 +17,7 @@ func update_vals(obj : Node3D):
 	$VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3/SpinBox2.value = obj.scale.y
 	$VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3/SpinBox3.value = obj.scale.z
 	
-	$VSplitContainer/Panel2/ScrollContainer/VBoxContainer/CheckButton.button_pressed = obj.shiftstone_material
+	$VSplitContainer/Panel2/ScrollContainer/VBoxContainer/OptionButton.selected = obj.shader
 	
 	$VSplitContainer/Panel2/ScrollContainer/VBoxContainer/ColorPickerButton.color = obj.albedo
 	$VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HSlider.value = obj.metallic
@@ -27,8 +27,11 @@ func update_vals(obj : Node3D):
 func _physics_process(delta: float) -> void:
 	if targetObject:
 		_apply_vals()
-	$"../../Camera3D".fov = $"../VSlider".value
-
+	$"../../Pivot/Camera3D".fov = $"../VSlider".value
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			$"../../Pivot".rotation_degrees.y += event.relative.x * -0.4
 func _apply_vals(): #if youre reading this im sorry for the atrocities i just commited and am about to commit
 	targetObject.id = $VSplitContainer/Panel2/ScrollContainer/VBoxContainer/LineEdit.text 
 	
@@ -44,7 +47,7 @@ func _apply_vals(): #if youre reading this im sorry for the atrocities i just co
 	targetObject.scale.y = $VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3/SpinBox2.value
 	targetObject.scale.z = $VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3/SpinBox3.value
 	
-	targetObject.shiftstone_material = $VSplitContainer/Panel2/ScrollContainer/VBoxContainer/CheckButton.button_pressed
+	targetObject.shader = $VSplitContainer/Panel2/ScrollContainer/VBoxContainer/OptionButton.selected 
 	
 	targetObject.albedo = $VSplitContainer/Panel2/ScrollContainer/VBoxContainer/ColorPickerButton.color
 	targetObject.metallic = $VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HSlider.value

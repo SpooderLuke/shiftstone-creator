@@ -1,17 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://1lnabtjwp8wj"]
+[gd_scene load_steps=3 format=3 uid="uid://1lnabtjwp8wj"]
 
+[ext_resource type="Theme" uid="uid://b1hk2p5s524hm" path="res://mainTHEME.tres" id="1_beyr0"]
 [ext_resource type="Script" uid="uid://bqicqshtjc4pd" path="res://objbutton.gd" id="1_tiumt"]
 
 [node name="TreeButton" type="HBoxContainer"]
+theme = ExtResource("1_beyr0")
 
 [node name="Button" type="Button" parent="."]
 custom_minimum_size = Vector2(263.775, 0)
 layout_mode = 2
-text = "ring"
+text = "  ring"
 alignment = 0
 script = ExtResource("1_tiumt")
 
 [node name="Button2" type="Button" parent="."]
+custom_minimum_size = Vector2(18.56, 0)
 layout_mode = 2
 text = "X"
 

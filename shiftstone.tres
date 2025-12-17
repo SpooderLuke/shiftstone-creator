@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cvhwmuokmm5gw"]
+
+[ext_resource type="Shader" uid="uid://nulb13muj0l2" path="res://shiftstone.gdshader" id="1_0n846"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0n846")
+shader_parameter/crystal_color = Color(0.3, 0.8, 1, 1)
+shader_parameter/pulse_speed = 2.0
+shader_parameter/pulse_strength = 0.4
+shader_parameter/crystal_sharpness = 20.0

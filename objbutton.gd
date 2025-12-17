@@ -5,7 +5,7 @@ func _pressed() -> void:
 	$"../../../../../..".targetObject = Obj
 
 func _process(delta: float) -> void:
-	text = Obj.id
+	text = "  " + Obj.id
 
 func _delete():
 	Obj.queue_free()

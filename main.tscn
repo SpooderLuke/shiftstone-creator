@@ -1,23 +1,27 @@
-[gd_scene load_steps=15 format=3 uid="uid://b4hr6pjlocl5l"]
+[gd_scene load_steps=20 format=3 uid="uid://b4hr6pjlocl5l"]
 
 [ext_resource type="Script" uid="uid://caocbrcre5plw" path="res://exporter.gd" id="1_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://2xalbl76qhec" path="res://target.png" id="1_kek77"]
+[ext_resource type="Theme" uid="uid://b1hk2p5s524hm" path="res://mainTHEME.tres" id="4_5vw27"]
 [ext_resource type="Script" uid="uid://fhtksd66y2e3" path="res://feature_panel.gd" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://cnpktj2pqutf2" path="res://particles.gd" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://c2wmayovhjp76" path="res://trail.gd" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://b1h0f6vccmeko" path="res://feature_check.gd" id="6_272bh"]
 [ext_resource type="PackedScene" uid="uid://okbpbvnvwtk3" path="res://Charge stone.fbx" id="7_272bh"]
 [ext_resource type="Script" uid="uid://b43nv175acetu" path="res://ObjectPanel.gd" id="8_kek77"]
+[ext_resource type="Shader" uid="uid://nulb13muj0l2" path="res://shiftstone.gdshader" id="10_4c57u"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_272bh"]
-sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
-ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_4c57u"]
+panorama = ExtResource("1_kek77")
 
 [sub_resource type="Sky" id="Sky_5vw27"]
-sky_material = SubResource("ProceduralSkyMaterial_272bh")
+sky_material = SubResource("PanoramaSkyMaterial_4c57u")
 
 [sub_resource type="Environment" id="Environment_kek77"]
 background_mode = 2
 sky = SubResource("Sky_5vw27")
+sky_custom_fov = 88.0
+sky_rotation = Vector3(0, 2.6790805, -6.4926248)
 tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mycd"]
@@ -31,8 +35,23 @@ material = SubResource("StandardMaterial3D_7mycd")
 font_size = 26
 outline_size = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
+bg_color = Color(0, 0, 0, 0.41568628)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="LabelSettings" id="LabelSettings_272bh"]
 font_size = 26
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efxa6"]
+render_priority = 0
+shader = ExtResource("10_4c57u")
+shader_parameter/crystal_color = Color(1, 1, 0, 1)
+shader_parameter/pulse_speed = 2.0
+shader_parameter/pulse_strength = 0.4
+shader_parameter/crystal_sharpness = 20.0
 
 [node name="Main" type="Node3D"]
 
@@ -41,7 +60,6 @@ environment = SubResource("Environment_kek77")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
-shadow_enabled = true
 
 [node name="Exporter" type="Node3D" parent="."]
 script = ExtResource("1_0xm2m")
@@ -68,8 +86,11 @@ script = ExtResource("6_7mycd")
 [node name="Particles" type="CPUParticles3D" parent="Exporter/Features/Unused"]
 script = ExtResource("5_lquwl")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.77901, 0.627012, 0, -0.627012, 0.77901, 0, 1.7334, 2.16635)
+[node name="Pivot" type="Marker3D" parent="."]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 0.7790097, 0.6270118, 0, -0.6270118, 0.7790097, 0, 1.7334, 2.16635)
 fov = 41.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -80,6 +101,7 @@ anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 289.0
 grow_vertical = 2
+theme = ExtResource("4_5vw27")
 script = ExtResource("8_kek77")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="CanvasLayer/LeftPanel"]
@@ -99,6 +121,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 41.0
 offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -126,6 +149,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 25.0
+offset_right = -7.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
@@ -152,23 +178,26 @@ layout_mode = 2
 [node name="SpinBox" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 min_value = -100.0
-step = 0.01
+step = 0.001
 update_on_text_changed = true
 prefix = "X:"
+custom_arrow_step = 0.1
 
 [node name="SpinBox2" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 min_value = -100.0
-step = 0.01
+step = 0.001
 update_on_text_changed = true
 prefix = "Y:"
+custom_arrow_step = 0.1
 
 [node name="SpinBox3" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 min_value = -100.0
-step = 0.01
+step = 0.001
 update_on_text_changed = true
 prefix = "Z:"
+custom_arrow_step = 0.1
 
 [node name="Label2" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -208,31 +237,44 @@ layout_mode = 2
 [node name="SpinBox" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 min_value = -100.0
-step = 0.01
+step = 0.001
 update_on_text_changed = true
 prefix = "X:"
+custom_arrow_step = 0.1
 
 [node name="SpinBox2" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 min_value = -100.0
-step = 0.01
+step = 0.001
 update_on_text_changed = true
 prefix = "Y:"
+custom_arrow_step = 0.1
 
 [node name="SpinBox3" type="SpinBox" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 min_value = -100.0
-step = 0.01
+step = 0.001
 update_on_text_changed = true
 prefix = "Z:"
+custom_arrow_step = 0.1
 
 [node name="HSeparator" type="HSeparator" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+[node name="Label7" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Use Shiftstone Material?
-(Ignores settings below)"
+text = "Shader"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = " Default"
+popup/item_0/id = 0
+popup/item_1/text = " Shifstone (ignores settings below)"
+popup/item_1/id = 1
+popup/item_2/text = " Toon (ignores metallic/emmision)"
+popup/item_2/id = 2
 
 [node name="Label4" type="Label" parent="CanvasLayer/LeftPanel/VSplitContainer/Panel2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -283,6 +325,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
+theme = ExtResource("4_5vw27")
 script = ExtResource("5_7mycd")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Panel"]
@@ -435,6 +478,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kek77")
 
 [node name="Label" type="Label" parent="CanvasLayer/Panel/Panel"]
 layout_mode = 1
@@ -508,12 +552,16 @@ offset_top = 45.0
 offset_right = 311.0
 offset_bottom = -69.0
 grow_vertical = 2
+theme = ExtResource("4_5vw27")
 min_value = 15.0
 max_value = 60.0
 value = 40.0
 
 [node name="Charge stone" parent="." instance=ExtResource("7_272bh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.917, 0, 0)
+
+[node name="Charge_stone" parent="Charge stone" index="0"]
+material_override = SubResource("ShaderMaterial_efxa6")
 
 [node name="Label3D" type="Label3D" parent="Charge stone"]
 transform = Transform3D(0.08310406, 0, 0, 0, 0.08310406, 0, 0, 0, 0.08310406, 0, 0.13716158, 0)
@@ -530,3 +578,5 @@ filters = PackedStringArray("*.shift")
 [connection signal="pressed" from="CanvasLayer/Button" to="Exporter" method="export_pressed"]
 [connection signal="pressed" from="CanvasLayer/MeshPicker/Button" to="CanvasLayer/LeftPanel" method="apply_selected_mesh"]
 [connection signal="file_selected" from="FileDialog" to="Exporter" method="_export"]
+
+[editable path="Charge stone"]

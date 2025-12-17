@@ -5,7 +5,7 @@ func export_pressed():
 	
 func _export(path):
 	data = {
-	"version" : 1,
+	"version" : 2,
 	"objects":[],
 	"passive":[],
 	"activate":[]
@@ -56,7 +56,7 @@ func object_load(object : Node3D) -> Dictionary:
 	obj_data["emmision"] = _col(object.emmision)
 	obj_data["emmision_strength"] = object.emmision_strength
 	
-	obj_data["shift_mat"] = object.shiftstone_material
+	obj_data["shader"] = object.shader
 	
 	return obj_data
 
